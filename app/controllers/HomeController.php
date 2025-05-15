@@ -13,7 +13,7 @@ class HomeController extends Controller {
     public function index($params = null){
         $response = [
             'ua' => SC::sessionValidate() ?? ['sv' => 0], //el doble ? sirve para compribar si la variable es nula o no
-            'title' => 'ForoFIE',
+            'title' => 'Sistema de reservas',
             'code' => 200,
         ];
         View::render('home',$response);

@@ -2,7 +2,7 @@
 
 namespace app;
 
-//**Cosas */
+//** Cosas */
 
 use app\classes\Autoloader as Autoloader;
 use app\classes\Router as Router;
