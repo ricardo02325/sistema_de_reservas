@@ -8,8 +8,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="<?=CSS?>bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="<?=CSS?>styles.css">
     <!-- <link rel="stylesheet" type="text/css" href="app.css"> -->  
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+    <!-- Se elimino porque elegimos usar otros iconos, xD -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> -->
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/6.5.95/css/materialdesignicons.min.css">
     <title><?=$args->title?></title>
     <style>
         body {
@@ -19,64 +23,19 @@
     </style> 
 </head>
 <body>
-<div id="app" class="container-fluid p-0 sticky-top">
-        <header class="row m-0 bg-dark bg-gradient" data-bs-theme="dark">
-            <div class="col-9">
-                <h1 class="ml-3 mt-2">Foro FIE</h1>                      
-            </div>
-            <div class="col-3 mt-2">
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" id="buscar-palabra" type="search" placeholder="Buscar" aria-label="Search">
-                    <button class="btn btn-outline-success" onclick="" type="button"><i class="bi bi-search"></i></button>
-                </form>
-            </div>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <header class="sidebar-header px-2">
+        <button class="toggle-btn" onclick="toggleSidebar()" aria-label="Menú">
+            <i class="mdi mdi-menu"></i>
+        </button>
+        <h4 class="mb-0">Sistema de Reservas</h4>
         </header>
-        <nav class="navbar navbar-expand-lg bg-dark bg-gradient mb-3" data-bs-theme="dark">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="/">Inicio</a>
-                        </li>
-                        <?php if(isset($ua->sv) && $ua->sv):?>                        
-                            <li class="nav-item">
-                            <a href="/UserPosts" class="nav-link btn btn-link">
-                                Mis publicaciones 
-                            </a>
-                            </li>
-                        <?php endif;?>
-                    </ul>
-                    <ul class="navbar-nav me-5 mb-2 d-flex">
-
-                      
-                    <?php if(isset($ua->sv) && $ua->sv): ?>
-                        <li class="nav-item-dropdown mt5">
-                            <a href="#" class="nav-link dropdown-toggle" role="button" 
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                                <?= isset($ua->username) ? $ua->username : '';?>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/Session/logout" class="dropdown-item btn btn-link">Cerrar sessión</a></li>
-                            </ul>
-                        </li>
-
-                    <?php else: ?>
-                        <li class="nav-item">
-                            <a href="/Session/iniSession" class="nav-link btn btn-link">
-                            <!-- <a href="app.routes.inisession" class="nav-link btn btn-link"> -->
-                                Inicar sesión
-                            </a>
-                        </li>
-                        <?php
-                            endif;
-                        ?>
-                    </ul>
-                </div>
-            </div>
+        <nav>
+        <a href="#" class="active"><i class="mdi mdi-calendar-check"></i><span>Reservaciones</span></a>
+        <a href="#"><i class="mdi mdi-desk"></i><span>Mesa</span></a>
+        <a href="#" class="logout"><i class="mdi mdi-exit-to-app"></i><span>Salir</span></a>
         </nav>
-    </div>    
+    </aside>
 <?php
 }

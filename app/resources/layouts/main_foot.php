@@ -7,6 +7,7 @@
     <script src="<?=JS?>boostrap.js"></script>
     <script src="<?=JS?>sweetalert2.js"></script>
     <script src="<?=JS?>app.js"></script>
+    <script src="<?=JS?>sidebar.js"></script>
 
     
     <script>
