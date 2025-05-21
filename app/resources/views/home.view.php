@@ -3,39 +3,48 @@
 
     setHeader($d);
 ?>
-<div class="row mx-auto">
-    <div class="col-2">
-        <div id="prev-posts" class="list-group small-font">
-            <!-- Publicaciones aneriores -->
-        </div>
-    </div>
-    <div class="col-8">
-        <div id="content" class="content">
-            <!-- Última publicación / publicacion seleccionada -->
 
-
-        </div>
-    </div>
-    <div class="col">
-        <div id="dates" class="list-group">
-            <!-- Calendario de publicaciones -->
-        </div>
-    </div>
-</div>
-
+<!-- Para tabla de reservas -->
+<main class="main-content">
+    <section class="table-container">
+        <table class="table table-hover table-bordered text-center align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <!-- Reservaciones del restaurante -->
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Juan Pérez</td>
+            <td>2025-05-20</td>
+            <td><span class="badge bg-success">Confirmado</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>María López</td>
+            <td>2025-05-22</td>
+            <td><span class="badge bg-warning text-dark">Pendiente</span></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Carlos Ruiz</td>
+            <td>2025-05-25</td>
+            <td><span class="badge bg-danger">Cancelado</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
 
 <?php
 
     include_once LAYOUTS . 'main_foot.php';
     setFooter($d);
 ?>
-
-    <script>
-        $( function(){
-            app.previousPosts();
-            app.lastPost();
-        })
-    </script>
 
 <?php 
     closeFooter();

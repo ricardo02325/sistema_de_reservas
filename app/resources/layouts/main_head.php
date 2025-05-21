@@ -15,12 +15,6 @@
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"> -->
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/6.5.95/css/materialdesignicons.min.css">
     <title><?=$args->title?></title>
-    <style>
-        body {
-            color: #888;
-            background-color : #CCC;
-        }
-    </style> 
 </head>
 <body>
     <!-- Sidebar -->
@@ -33,7 +27,7 @@
         </header>
         <nav>
         <a href="#" class="active"><i class="mdi mdi-calendar-check"></i><span>Reservaciones</span></a>
-        <a href="#"><i class="mdi mdi-desk"></i><span>Mesa</span></a>
+        <a href="#"><i class="mdi mdi-table-picnic"></i><span>Mesa</span></a>
         <a href="#" class="logout"><i class="mdi mdi-exit-to-app"></i><span>Salir</span></a>
         </nav>
     </aside>
