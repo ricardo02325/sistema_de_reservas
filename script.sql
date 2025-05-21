@@ -57,13 +57,12 @@ CREATE TABLE mesas (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 COMMENT = 'Mesas disponibles en el restaurante';
 
--- Tabla de reservas
+-- Tabla de reservas con campo unificado para fecha y hora
 CREATE TABLE reservas (
     id INT AUTO_INCREMENT PRIMARY KEY COMMENT 'ID único de la reserva',
     usuario_id INT COMMENT 'ID del usuario que registró la reserva',
     mesa_id INT COMMENT 'ID de la mesa reservada',
-    fecha_reserva DATE NOT NULL COMMENT 'Fecha para la reserva',
-    hora_reserva TIME NOT NULL COMMENT 'Hora para la reserva',
+    fecha_hora_reserva DATETIME NOT NULL COMMENT 'Fecha y hora completa para la reserva',
     cantidad_personas TINYINT UNSIGNED NOT NULL COMMENT 'Número de personas para la reserva (máximo 10)',
     estado ENUM(
         'Pendiente',
@@ -79,54 +78,57 @@ CREATE TABLE reservas (
     FOREIGN KEY (mesa_id) REFERENCES mesas(id) ON DELETE SET NULL ON UPDATE CASCADE,
     INDEX idx_usuario_reserva (usuario_id),
     INDEX idx_mesa_reserva (mesa_id),
-    INDEX idx_fecha_reserva (fecha_reserva),
+    INDEX idx_fecha_hora_reserva (fecha_hora_reserva),
     INDEX idx_estado (estado)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 COMMENT = 'Reservas hechas en el restaurante';
 
 -- Insertar roles
-INSERT INTO roles (nombre_rol) VALUES 
-('mesero'),
-('administrador'),
-('recepcionista');
+INSERT INTO roles (nombre_rol) VALUES
+('Administrador'),
+('Recepcionista'),
+('Mesero'),
+('Cliente'),
+('Gerente');
 
 -- Insertar usuarios
-INSERT INTO usuarios (nombre, apellido_paterno, apellido_materno, email, telefono, fecha_ingreso)
+INSERT INTO usuarios (primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, email, telefono, fecha_ingreso)
 VALUES
-('Annelise Najara', 'Cabrales', 'López', 'annelise.cabrales@example.com', '5567890123', '2023-05-01'),
-('Carlos', 'Ramírez', 'Méndez', 'carlos.ramirez@example.com', '5512345678', '2022-10-12'),
-('Fernanda', 'Soto', 'Lozano', 'fernanda.soto@example.com', '5523456789', '2023-01-15'),
-('Jorge', 'Martínez', NULL, 'jorge.mtz@example.com', '5598765432', '2023-03-20'),
-('Lucía', 'Gómez', 'Pérez', 'lucia.gomez@example.com', '5543219876', '2023-06-01');
+('Annelise', 'Najara', 'Cabrales', 'López', 'annelise.cabrales@example.com', '5544332211', '2023-10-01'),
+('Luis', 'Antonio', 'Mendoza', 'Gómez', 'luis.mendoza@example.com', '5511223344', '2024-01-12'),
+('María', NULL, 'Fernández', 'Luna', 'maria.fernandez@example.com', '5522334455', '2024-02-05'),
+('Carlos', 'Eduardo', 'Ramírez', 'Santos', 'carlos.ramirez@example.com', '5533445566', '2023-12-10'),
+('Sofía', 'Beatriz', 'Morales', 'Ortiz', 'sofia.morales@example.com', '5544556677', '2024-03-20');
 
--- Relacionar usuarios con roles
+-- Asignación de roles a usuarios
 INSERT INTO usuario_roles (usuario_id, rol_id) VALUES
-(1, 1), -- Annelise - mesero
-(2, 2), -- Carlos - administrador
-(3, 1), -- Fernanda - mesero
-(4, 3), -- Jorge - recepcionista
-(5, 1); -- Lucía - mesero
+(1, 1),  -- Annelise: Administradora
+(2, 4),  -- Luis: Cliente
+(3, 4),  -- María: Cliente
+(4, 2),  -- Carlos: Recepcionista
+(5, 3);  -- Sofía: Mesera
 
--- Credenciales (solo para meseros y admin)
+-- Credenciales de login
 INSERT INTO credenciales_login (usuario_id, contraseña) VALUES
-(1, 'hash_annelise123'),
-(2, 'hash_carlos456'),
-(3, 'hash_fernanda789'),
-(5, 'hash_lucia321');
+(1, SHA2('admin123', 256)),
+(2, SHA2('cliente456', 256)),
+(3, SHA2('cliente789', 256)),
+(4, SHA2('recepcion123', 256)),
+(5, SHA2('mesera321', 256));
 
--- Insertar mesas
+-- Mesas disponibles
 INSERT INTO mesas (numero_mesa, capacidad, ubicacion, tipo) VALUES
 (1, 4, 'Interior', 'normal'),
-(2, 6, 'Terraza', 'exterior'),
-(3, 2, 'VIP Room', 'vip'),
-(4, 4, 'Interior', 'reservada'),
-(5, 8, 'Exterior', 'normal');
+(2, 6, 'Terraza', 'vip'),
+(3, 2, 'Ventana', 'normal'),
+(4, 8, 'Salón privado', 'reservada'),
+(5, 4, 'Exterior', 'exterior');
 
--- Insertar reservas
-INSERT INTO reservas (usuario_id, mesa_id, fecha_reserva, hora_reserva, cantidad_personas, estado)
-VALUES
-(1, 1, '2025-05-16', '19:00:00', 2, 'Confirmada'), -- Annelise
-(3, 2, '2025-05-17', '20:30:00', 4, 'Pendiente'),
-(5, 3, '2025-05-17', '18:45:00', 2, 'En lista de espera'),
-(4, 4, '2025-05-18', '21:00:00', 3, 'Cancelada'),
-(2, 5, '2025-05-19', '19:15:00', 6, 'Reprogramada');
+-- Reservas realizadas
+INSERT INTO reservas (usuario_id, mesa_id, fecha_hora_reserva, cantidad_personas, estado)
+VALUES 
+(1, 1, '2025-05-22 13:00:00', 2, 'Confirmada'),
+(2, 2, '2025-05-23 19:30:00', 4, 'Pendiente'),
+(3, 3, '2025-05-24 14:15:00', 3, 'Cancelada'),
+(4, 4, '2025-05-25 20:00:00', 5, 'Confirmada'),
+(5, 5, '2025-05-26 18:00:00', 2, 'En lista de espera');
