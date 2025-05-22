@@ -18,8 +18,6 @@ class ReservasController extends Controller {
 
     public function getReservas($params = null){
         $reserva = new Reservas();
-        $reserva->connect();
-        $reserva->table = $reserva->conex;
-        echo $reserva->all()->get();
+        $data = $reserva->getAllReservas();       
     }
 }

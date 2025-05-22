@@ -48,7 +48,7 @@ class DB {
     }
 
     public function count($c = "*"){
-        $this->c = ",count(" . $c . ") as tt";
+        $this->c = ",count(" . $c .") as tt ";
         return $this;
     }
 
@@ -99,9 +99,8 @@ class DB {
                     " where " . $this->w .
                     $this->o . 
                     $this->l;
-        // echo $sql;die;
 
-        $r = $this->table->query( $sql );
+        $r = $this->conex->query($sql);
         $result = [];
         while ( $f = $r->fetch_assoc() ){
             $result[] = $f;
@@ -112,22 +111,20 @@ class DB {
     }
 
     public function create(){
-        $sql = "INSERT INTO " . str_replace("app\\models\\","",get_class( $this ) ) .
-        '(' . implode(",", $this->fillable) . ') VALUES (' .  //implode (implosionar) aggara un array y lo convierte en un string y lo separa por comas
-        trim(str_replace("&", "?,", str_pad("",count($this->fillable), "&")), ",") . ')'; 
-
-        $stat = $this->table->prepare($sql);
-        // echo $sql;die;
-        $stat = bind_param ( str_pad("", count($this->fillable), "s"), ...$this->values );
-        $stat->execute();
-        return $stat;
+        $sql = "insert into " . str_replace("app\\models\\","",get_class( $this ) ) . 
+                    ' (' . implode( "," , $this -> fillable ) . ') values (' . 
+                    trim(str_replace("&","?,",str_pad("",count( $this -> fillable ),"&")),",") . ');';
+        $stmt = $this -> table -> prepare( $sql );
+        $stmt -> bind_param( str_pad("",count( $this -> fillable),"s"),...$this -> values);
+        $stmt -> execute();
+        return $stmt ->insert_id;
     }
 
     public function delete(){
-        $sql = "DELETE FROM " . str_replace("app\\models\\","",get_class( $this ) ) .
-        " WHERE " . $this->w;
-
-        return $this->table->query($sql);
+        $sql = 'delete from ' . str_replace("app\\models\\","",get_class( $this ) ) . 
+                ' where ' . $this -> w;
+        return $this -> table -> query( $sql );
     }
+
 
 }
