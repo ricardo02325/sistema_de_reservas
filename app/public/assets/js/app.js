@@ -1,6 +1,6 @@
 const app = {
     routes: {
-        getReservas: '/Reservas',
+        getReservas: '/Reservas/getReservas',
     },
     user: {
         sv: false,
@@ -19,7 +19,6 @@ const app = {
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
-                        <th>Usuario ID</th>
                         <th>N° Mesa</th>
                         <th>Fecha</th>
                         <th>Personas</th>
@@ -55,7 +54,6 @@ const app = {
                     html += `
                         <tr>
                             <td>${r.id}</td>
-                            <td>${r.usuario_id}</td>
                             <td>${r.mesa_id}</td>
                             <td>${r.fecha_hora_reserva}</td>
                             <td>${r.cantidad_personas}</td>

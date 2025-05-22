@@ -2,22 +2,20 @@
 
 namespace app\controllers;
 
-// Se eliminan porque no se usan en este programa
-// use app\models\posts as posts;
-// use app\models\comments as comments;
-// use app\models\interactions as inter;
-// use Dom\Comment;
+use app\models\Reservas;
 
-use app\models\reservas;
+class ReservasController {
+    public function getReservas() {
+        header('Content-Type: application/json');
 
-class ReservasController extends Controller {
+        $reservasModel = new Reservas();
+        $reservas = $reservasModel->getAllReservas();
 
-    public function __construct(){
-        parent::__construct();
+        if (is_string($reservas)) {
+            $reservas = json_decode($reservas, true); // Lo convierte en array asociativo
+        }
+
+        echo json_encode($reservas);
     }
 
-    public function getReservas($params = null){
-        $reserva = new Reservas();
-        $data = $reserva->getAllReservas();       
-    }
 }
