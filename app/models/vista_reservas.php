@@ -4,7 +4,7 @@ namespace app\models;
 
 use app\classes\DB;
 
-class Reservas extends DB {
+class vista_reservas extends DB {
 
     protected string $table = 'vista_reservas';
 

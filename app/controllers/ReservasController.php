@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\Reservas;
+use app\models\vista_reservas as Reservas;
 
 class ReservasController {
     public function getReservas() {
