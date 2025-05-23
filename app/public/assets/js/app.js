@@ -84,15 +84,6 @@ const app = {
                             title="Editar">
                             <i class="mdi mdi-pencil"></i>
                         </button>
-
-                        <!-- Botón Eliminar -->
-                        <button 
-                            class="btn btn-sm btn-outline-danger eliminar-reserva" 
-                            data-id="${r.reserva_id}" 
-                            title="Eliminar">
-                            <i class="mdi mdi-delete"></i>
-                        </button>
-
                         </td>
                     </tr>`;
         }
