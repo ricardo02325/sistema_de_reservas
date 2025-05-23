@@ -1,6 +1,6 @@
 # Sistema de reservas
 
-![Logo](app/assets/imgs/logo.jpeg)
+![Logo](app/public/assets/imgs/logo.jpeg)
 
 **Sitema de reservas** es una aplicación web para consultar, eliminar, modificar, añadir reservas.
 
