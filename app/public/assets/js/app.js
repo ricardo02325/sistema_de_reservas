@@ -15,18 +15,18 @@ const app = {
   mostrarReservas: async function () {
     try {
       let html = `
-            <thead class="table-dark">
-                <tr>
-                    <th>N° Reserva</th>
-                    <th>Usuario</th>
-                    <th>N° Mesa</th>
-                    <th>Fecha</th>
-                    <th>Personas</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>`;
+          <thead class="table-dark">
+              <tr>
+                  <th>N° Reserva</th>
+                  <th>Usuario</th>
+                  <th>N° Mesa</th>
+                  <th>Fecha</th>
+                  <th>Personas</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody>`;
 
       const reservas = await $.getJSON(this.routes.getReservas);
       console.log("🔍 Datos recibidos:", reservas);
@@ -35,6 +35,8 @@ const app = {
         html += `<tr><td colspan="7"><b>No hay reservas registradas</b></td></tr>`;
       } else {
         for (let r of reservas) {
+          console.log(r); // ✅ Aquí sí
+
           const estado = r.estado || "";
           const nombreUsuario = r.nombre_usuario || "Desconocido";
 
@@ -67,25 +69,29 @@ const app = {
           }
 
           html += `
-                    <tr>
-                        <td>${r.reserva_id}</td>
-                        <td>${r.nombre_usuario}</td>
-                        <td>${r.numero_mesa}</td>
-                        <td>${r.fecha_hora_reserva}</td>
-                        <td>${r.cantidad_personas}</td>
-                        <td>${estadoBadge}</td>
-                        <td>
-                        <!-- Botón Editar -->
+                  <tr>
+                      <td>${r.reserva_id}</td>
+                      <td>${nombreUsuario}</td>
+                      <td>${r.numero_mesa}</td>
+                      <td>${r.fecha_hora_reserva}</td>
+                      <td>${r.cantidad_personas} ${
+            r.cantidad_personas == 1 ? "persona" : "personas"
+          }</td>
+                      <td>${estadoBadge}</td>
+                      <td>
                         <button 
-                            class="btn btn-sm btn-outline-primary editar-reserva" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#modalEditarReserva"
-                            data-id="${r.reserva_id}" 
-                            title="Editar">
-                            <i class="mdi mdi-pencil"></i>
+                          class="btn btn-sm btn-outline-primary editar-reserva" 
+                          data-bs-toggle="modal" 
+                          data-bs-target="#modalEditarReserva"
+                          data-id="${r.reserva_id}"
+                          data-fecha="${r.fecha_hora_reserva}" 
+                          data-personas="${r.cantidad_personas}" 
+                          data-estado="${r.estado}"
+                          title="Editar">
+                          <i class="mdi mdi-pencil"></i>
                         </button>
-                        </td>
-                    </tr>`;
+                      </td>
+                  </tr>`;
         }
       }
 

@@ -15,7 +15,7 @@
 
 ### 1. Clona el repositorio
 ```bash
-git clone https://github.com/elizaldi14/HydroByte.git
+git https://github.com/ricardo02325/sistema_de_reservas.git
 ```
 
 <!-- ## Estructura del proyecto
