@@ -26,7 +26,6 @@
       </div>
       <div class="modal-body">
         <form id="formEditarReserva">
-          <!-- ID oculto -->
           <input type="hidden" id="editar-id" name="id">
 
           <div class="mb-3">

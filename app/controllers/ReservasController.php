@@ -47,28 +47,31 @@ class ReservasController
     {
         header('Content-Type: application/json');
 
-        if (!isset($_POST['reserva_id'])) {
+        if (!isset($_POST['id'])) {
             http_response_code(400);
             echo json_encode(['error' => 'Falta ID de reserva']);
             return;
         }
 
-        $id = $_POST['reserva_id'];
-        $fecha = $_POST['fecha_hora_reserva'];
-        $personas = $_POST['cantidad_personas'];
+        $id = $_POST['editar-id'];
+        $fecha = $_POST['editar-fecha'];
+        $personas = $_POST['personas'];
         $estado = $_POST['estado'];
+
+        // Convertir formato de fecha
+        $fechaFormateada = date('Y-m-d H:i:s', strtotime($fecha));
 
         $r = new reserva();
         $r->connect();
 
         $sql = "UPDATE reserva SET 
-                fecha_hora_reserva = ?, 
-                cantidad_personas = ?, 
-                estado = ? 
-            WHERE id = ?";
+        fecha_hora_reserva = ?, 
+        cantidad_personas = ?, 
+        estado = ? 
+    WHERE id = ?";
 
         $stmt = $r->conex->prepare($sql);
-        $stmt->bind_param("sisi", $fecha, $personas, $estado, $id);
+        $stmt->bind_param("sisi", $fechaFormateada, $personas, $estado, $id);
         $success = $stmt->execute();
 
         if ($success) {
@@ -78,4 +81,6 @@ class ReservasController
             echo json_encode(['error' => 'Error al actualizar la reserva']);
         }
     }
+
+
 }
