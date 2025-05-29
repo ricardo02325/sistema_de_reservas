@@ -1,16 +1,27 @@
 body {
     overflow-x: hidden;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
+/* Layout Principal */
+.main-content-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
 aside.sidebar {
     width: 250px;
     height: 100vh;
     position: fixed;
     background-color: #212529;
     padding: 1rem 1rem 0;
-    transition: width 0.3s;
+    transition: width 0.3s ease;
     display: flex;
     flex-direction: column;
+    z-index: 1000;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 aside.sidebar.collapsed {
@@ -19,7 +30,7 @@ aside.sidebar.collapsed {
 
 .sidebar h4,
 .sidebar a span {
-    transition: opacity 0.3s, visibility 0.3s;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .sidebar.collapsed h4,
@@ -36,14 +47,17 @@ aside.sidebar.collapsed {
     display: flex;
     align-items: center;
     padding: 0.75rem 1rem;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
     white-space: nowrap;
+    border-radius: 4px;
+    margin: 0.25rem 0;
 }
 
 .sidebar a:hover,
 .sidebar a.active {
     background-color: #343a40;
     color: #fff;
+    transform: translateX(2px);
 }
 
 .sidebar i,
@@ -52,27 +66,66 @@ aside.sidebar.collapsed {
     text-align: center;
     margin-right: 10px;
     font-size: 1.5rem;
+    transition: margin 0.3s ease;
+}
+
+.sidebar.collapsed i,
+.sidebar.collapsed .mdi {
+    margin-right: 0;
 }
 
 .sidebar a.logout {
     margin-top: auto;
     border-top: 1px solid #343a40;
     padding-top: 1rem;
+    margin-bottom: 1rem;
 }
 
-main.main-content {
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+}
+
+.toggle-btn {
+    color: white;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+.toggle-btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Main Content Styles */
+.main-content {
     margin-left: 250px;
     padding: 2rem;
-    transition: margin-left 0.3s;
+    transition: margin-left 0.3s ease;
     position: relative;
     min-height: 100vh;
     background: #f8f9fa;
+    width: calc(100% - 250px);
 }
 
-main.main-content.collapsed {
+.main-content.collapsed {
     margin-left: 80px;
+    width: calc(100% - 80px);
 }
 
+/* Elementos del contenido */
 .profile-pic {
     position: absolute;
     top: 20px;
@@ -83,7 +136,8 @@ main.main-content.collapsed {
     object-fit: cover;
     border: 2px solid #212529;
     cursor: pointer;
-    transition: transform 0.3s;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .profile-pic:hover {
@@ -94,25 +148,56 @@ main.main-content.collapsed {
     margin-top: 4rem;
     width: 100%;
     overflow-x: auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
 }
 
-.sidebar-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: white;
-    margin-bottom: 1rem;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 250px;
+    }
+    
+    .sidebar.collapsed {
+        transform: translateX(0);
+        width: 250px;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .main-content.collapsed {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .toggle-btn {
+        display: block;
+    }
+    
+    .sidebar.collapsed ~ .main-content::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
 }
 
-.toggle-btn {
-    color: white;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    padding: 0;
+/* Animación para el icono del botón */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
-.toggle-btn:focus {
-    outline: none;
-    box-shadow: none;
+.toggle-btn.active i {
+    animation: spin 0.3s ease;
 }

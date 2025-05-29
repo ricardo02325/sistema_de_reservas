@@ -1,9 +1,9 @@
 <?php
-    namespace app\models;
+namespace app\models;
 
-    use app\classes\DB;
+use app\classes\DB;
 
-    class reserva extends DB {
+class Reserva extends DB {
     public $fillable = ['fecha_hora_reserva', 'cantidad_personas', 'estado'];
     public $values = [];
-    }
+}
