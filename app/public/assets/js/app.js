@@ -104,29 +104,6 @@ const app = {
       );
     }
   },
-  $("#formEditarReserva").submit(function (e) {
-    e.preventDefault(); // evita que se recargue la página
-
-    const datos = {
-        id: $("#editar-id").val(),
-        fecha: $("#editar-fecha").val(),
-        personas: $("#editar-personas").val(),
-        estado: $("#editar-estado").val()
-    };
-
-    $.post("<?= URL ?>Reservas/update", datos, function (response) {
-        if (response.success) {
-            Swal.fire("Actualizado", "Reserva actualizada correctamente", "success").then(() => {
-                location.reload(); // refresca la tabla
-            });
-        } else {
-            Swal.fire("Error", "No se pudo actualizar la reserva", "error");
-        }
-    }).fail(function (xhr) {
-        console.error(xhr.responseText);
-        Swal.fire("Error", "Error al hacer la petición", "error");
-    });
-})
 };
 
 $(document).ready(function () {
