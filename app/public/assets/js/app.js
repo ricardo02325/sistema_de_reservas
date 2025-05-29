@@ -228,28 +228,43 @@ const app = {
   },
   
   // Eliminar reserva confirmada
-  eliminarReservaConfirmada: function() {
+ eliminarReservaConfirmada: function() {
     const reservaId = $("#reserva-id-eliminar").val();
     
+    // Verificar que el ID existe
+    if (!reservaId) {
+        showAlert("No se ha seleccionado ninguna reserva para eliminar", "danger");
+        return;
+    }
+
     $.ajax({
-      url: `${this.routes.deleteReserva}/${reservaId}`,
-      type: "DELETE",
-      dataType: "json"
-    })
-    .done(response => {
-      if (response.success) {
-        $("#modalConfirmarEliminar").modal("hide");
-        this.mostrarReservas();
-        showAlert(response.message || "Reserva eliminada correctamente", "success");
-      } else {
-        showAlert(response.error || "Error al eliminar reserva", "danger");
-      }
-    })
-    .fail(xhr => {
-      console.error("Error:", xhr.responseText);
-      showAlert("Error al eliminar la reserva", "danger");
+        url: `${this.routes.deleteReserva}/${reservaId}`,
+        type: "DELETE",
+        dataType: "json",
+        data: { id: reservaId }, // Envía el ID también en el cuerpo
+        success: function(response) {
+            if (response.success) {
+                $("#modalConfirmarEliminar").modal("hide");
+                app.mostrarReservas();
+                showAlert(response.message || "Reserva eliminada correctamente", "success");
+            } else {
+                showAlert(response.error || "Error al eliminar reserva", "danger");
+            }
+        },
+        error: function(xhr) {
+            let errorMsg = "Error en la solicitud";
+            try {
+                const response = JSON.parse(xhr.responseText);
+                errorMsg = response.error || errorMsg;
+                if (response.details) errorMsg += `: ${response.details}`;
+            } catch (e) {
+                errorMsg += ` (${xhr.status}: ${xhr.statusText})`;
+            }
+            showAlert(errorMsg, "danger");
+            console.error("Error completo:", xhr.responseText);
+        }
     });
-  },
+},
   
   // Agregar nueva reserva
   agregarReserva: function(e) {

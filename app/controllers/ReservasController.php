@@ -175,27 +175,42 @@ class ReservasController
     }
 }
 
-public function delete($params)
+public function delete($params = [])
 {
     header('Content-Type: application/json');
 
-    if (empty($params[0])) {
+    // Obtener ID de la reserva de los parámetros o del cuerpo de la solicitud
+    $id = $_REQUEST['id'] ?? $params[0] ?? null;
+
+    if (empty($id)) {
         http_response_code(400);
-        echo json_encode(['error' => 'Falta ID de reserva']);
+        echo json_encode(['error' => 'Falta ID de reserva', 'received_params' => $params]);
         return;
     }
-
-    $id = $params[0];
 
     try {
         $r = new Reserva();
         $r->connect();
 
+        // Verificar si la reserva existe
+        $checkSql = "SELECT id FROM reservas WHERE id = ?";
+        $checkStmt = $r->conex->prepare($checkSql);
+        $checkStmt->bind_param("i", $id);
+        $checkStmt->execute();
+        $checkResult = $checkStmt->get_result();
+        
+        if ($checkResult->num_rows === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'La reserva no existe']);
+            return;
+        }
+
+        // Eliminar la reserva
         $sql = "DELETE FROM reservas WHERE id = ?";
         $stmt = $r->conex->prepare($sql);
         
         if (!$stmt) {
-            throw new \Exception("Error en la preparación de la consulta");
+            throw new \Exception("Error en la preparación de la consulta: " . $r->conex->error);
         }
 
         $stmt->bind_param("i", $id);
@@ -207,19 +222,17 @@ public function delete($params)
                 'message' => 'Reserva eliminada correctamente'
             ]);
         } else {
-            echo json_encode([
-                'error' => 'No se encontró la reserva o no se pudo eliminar'
-            ]);
+            throw new \Exception("No se pudo eliminar la reserva");
         }
     } catch (\Exception $e) {
         http_response_code(500);
         echo json_encode([
             'error' => 'Error al eliminar la reserva',
-            'details' => $e->getMessage()
+            'details' => $e->getMessage(),
+            'sql_error' => $r->conex->error ?? null
         ]);
     }
 }
-
 public function getUsuarios()
 {
     header('Content-Type: application/json');
