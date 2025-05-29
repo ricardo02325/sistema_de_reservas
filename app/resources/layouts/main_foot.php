@@ -29,10 +29,44 @@ function setFooter($args)
             const estado = $(this).data("estado");
 
             $("#editar-id").val(id);
-            $("#editar-fecha").val(fecha.replace(" ", "T")); // HTML datetime-local necesita "T"
+            $("#editar-fecha").val(fecha.replace(" ", "T"));
             $("#editar-personas").val(personas);
             $("#editar-estado").val(estado);
         });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("formReserva");
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+
+                try {
+                    const response = await fetch("guardar_reserva.php", {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        alert("✅ Reserva registrada exitosamente");
+                        form.reset();
+                        const modal = bootstrap.Modal.getInstance(document.getElementById("modalReserva"));
+                        modal.hide();
+
+                        // Opcional: puedes actualizar la tabla de reservas sin recargar la página
+                    } else {
+                        alert("⚠️ Error al guardar la reserva: " + result.message);
+                    }
+                } catch (error) {
+                    console.error("Error al enviar el formulario:", error);
+                    alert("❌ Ocurrió un error inesperado.");
+                }
+            });
+        });
+
 
     </script>
     <?php

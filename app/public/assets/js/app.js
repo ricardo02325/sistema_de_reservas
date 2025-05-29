@@ -23,7 +23,11 @@ const app = {
                   <th>Fecha</th>
                   <th>Personas</th>
                   <th>Estado</th>
-                  <th>Acciones</th>
+                  <th>Acciones 
+                  <button onclick="mostrarModal()" 
+                          class="btn btn-primary btn-sm rounded-circle"
+                          title="Añadir nueva reserva"> + 
+                  </button></th>
               </tr>
           </thead>
           <tbody>`;
